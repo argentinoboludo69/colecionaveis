@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colecionáveis Revolucionários</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'red-china': '#DE2910',
+                        'yellow-china': '#FFDE00',
+                        'revolution': '#D10000',
+                        'soviet': '#CC0000',
+                        'hammer': '#FBEC5D'
+                    },
+                    fontFamily: {
+                        'propaganda': ['Impact', 'Arial', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-down': 'slideDown 0.3s ease-out',
+                        'pulse-bg': 'pulseBg 2s infinite'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: 0 },
+                            '100%': { opacity: 1 },
+                        },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-10px)', opacity: 0 },
+                            '100%': { transform: 'translateY(0)', opacity: 1 },
+                        },
+                        pulseBg: {
+                            '0%, 100%': { backgroundColor: '#D10000' },
+                            '50%': { backgroundColor: '#E32525' },
+                        }
+                    }
+                }
+            }
+        }
+
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .hero-pattern {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://aventurasnahistoria.com.br/media/uploads/marx_comunismo_capa.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .revolution-quote {
+            border-left: 4px solid #DE2910;
+            padding-left: 1rem;
+            font-style: italic;
+        }
+        
+        .product-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .hammer-sickle {
+            position: relative;
+        }
+        
+        .hammer-sickle::before {
+            content: "☭";
+            font-size: 1.2em;
+            margin-right: 0.5rem;
+        }
+        
+        .cart-animation {
+            position: fixed;
+            background-color: #DE2910;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .about-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://static.todamateria.com.br/upload/ma/ol/maolider-cke.jpg');
+        }
+        
+        .contact-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://c.files.bbci.co.uk/C554/production/_107061505_mediaitem107061504.jpg');
+        }
+        
+        /* Star shape for ratings */
+        .star {
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            background-color: #FFDE00;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Fluttering flag animation */
+        @keyframes flag-wave {
+            0% { transform: skewX(0); }
+            25% { transform: skewX(3deg); }
+            50% { transform: skewX(0); }
+            75% { transform: skewX(-3deg); }
+            100% { transform: skewX(0); }
+        }
+        
+        .flag-animation {
+            animation: flag-wave 3s ease-in-out infinite;
+            transform-origin: left;
+            display: inline-block;
+        }
+        
+        /* Dark mode adjustments */
+        .dark .product-card {
+            background-color: #2D3748;
+            border-color: #4A5568;
+        }
+        
+        .dark .revolution-quote {
+            color: #E2E8F0;
+            border-color: #DE2910;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
+    <!-- Cart Icon (fixed) -->
+    <div id="cartIcon" class="fixed top-4 right-4 z-50 bg-revolution text-white p-3 rounded-full shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cartCount" class="absolute -top-2 -right-2 bg-yellow-china text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+    </div>
+    
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="fixed top-0 right-0 h-full w-72 bg-white dark:bg-gray-800 shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out z-40 overflow-auto">
+        <div class="p-4 bg-revolution text-white flex justify-between items-center">
+            <h3 class="font-bold text-lg hammer-sickle">Seu Carrinho</h3>
+            <button id="closeCart" class="focus:outline-none">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="cartItems" class="p-4">
+            <p class="text-center text-gray-500 dark:text-gray-400">Seu carrinho está vazio</p>
+        </div>
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+            <div class="flex justify-between mb-2">
+                <span>Total:</span>
+                <span id="cartTotal">R$ 0,00</span>
+            </div>
+            <button class="w-full bg-revolution hover:bg-red-800 text-white py-2 px-4 rounded-md transition duration-300">
+                Finalizar Compra
+            </button>
+        </div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="bg-revolution text-white shadow-md sticky top-0 z-30">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-propaganda">
+                <span class="flag-animation">☭</span> COLECIONÁVEIS REVOLUCIONÁRIOS
+            </h1>
+            <div class="space-x-6 hidden md:flex">
+                <a href="#inicio" class="hover:text-hammer transition duration-300 font-bold">Início</a>
+                <a href="#produtos" class="hover:text-hammer transition duration-300 font-bold">Produtos</a>
+                <a href="#sobre" class="hover:text-hammer transition duration-300 font-bold">Sobre</a>
+                <a href="#contato" class="hover:text-hammer transition duration-300 font-bold">Contato</a>
+            </div>
+            <button id="mobileMenuButton" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden hidden animate-slide-down">
+            <div class="container mx-auto px-4 py-2 space-y-2">
+                <a href="#inicio" class="block hover:bg-red-800 py-2 px-4 rounded transition duration-300">Início</a>
+                <a href="#produtos" class="block hover:bg-red-800 py-2 px-4 rounded transition duration-300">Produtos</a>
+                <a href="#sobre" class="block hover:bg-red-800 py-2 px-4 rounded transition duration-300">Sobre</a>
+                <a href="#contato" class="block hover:bg-red-800 py-2 px-4 rounded transition duration-300">Contato</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-pattern text-white py-20">
+        <div class="container mx-auto px-4 flex flex-col items-center text-center">
+            <h2 class="text-4xl md:text-5xl font-propaganda mb-6 animate-fade-in">COLEÇÃO HISTÓRICA REVOLUCIONÁRIA</h2>
+            <div class="w-20 h-1 bg-revolution mb-6"></div>
+            <p class="text-xl mb-8 max-w-2xl animate-fade-in delay-100">
+                "Trabalhadores do mundo, uni-vos! Não tendes nada a perder a não ser vossos grilhões."
+            </p>
+            <div class="revolution-quote my-8 max-w-2xl animate-fade-in delay-200">
+                <p class="text-lg">O povo, e só o povo, é a força motriz na criação da história mundial.</p>
+                <p class="text-right mt-2">— Mao Tse-Tung</p>
+            </div>
+            <a href="#produtos" class="bg-revolution hover:bg-red-800 text-white py-3 px-8 rounded-md inline-block transition duration-300 font-bold animate-fade-in delay-300">
+                EXPLORE A COLEÇÃO ☭
+            </a>
+        </div>
+    </section>
+
+    <!-- Featured Quote -->
+    <div class="bg-revolution text-white py-4 animate-pulse-bg">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-lg font-bold">"A teoria torna-se uma força material quando se apodera das massas." — Karl Marx</p>
+        </div>
+    </div>
+
+    <!-- Products Section -->
+    <section id="produtos" class="py-16 bg-white dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-propaganda mb-4 hammer-sickle">PRODUTOS DO POVO</h2>
+                <div class="w-20 h-1 bg-revolution mx-auto"></div>
+                <p class="mt-4 text-lg max-w-2xl mx-auto text-gray-600 dark:text-gray-400">
+                    Itens colecionáveis que celebram a história revolucionária e o legado de Mao Tse-Tung
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <div class="h-4 bg-revolution"></div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Livro Vermelho - Edição Colecionador</h3>
+                            <div class="flex">
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star"></div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">Edição especial encadernada em couro com folheados a ouro das citações e pensamentos de Mao Tse-Tung.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-lg text-revolution">R$ 189,90</span>
+                            <button class="add-to-cart bg-revolution hover:bg-red-800 text-white py-2 px-6 rounded flex items-center transition-all duration-300 transform hover:scale-105">
+                                <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <div class="h-4 bg-revolution"></div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Medalha Comemorativa</h3>
+                            <div class="flex">
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star"></div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">Medalha comemorativa em bronze com estojo e certificado de autenticidade.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-lg text-revolution">R$ 249,00</span>
+                            <button class="add-to-cart bg-revolution hover:bg-red-800 text-white py-2 px-6 rounded flex items-center transition-all duration-300 transform hover:scale-105">
+                                <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <div class="h-4 bg-revolution"></div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Pôster Vintage - Grande Salto</h3>
+                            <div class="flex">
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star"></div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">Reprodução de pôster de propaganda da era do Grande Salto para Frente em alta qualidade.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-lg text-revolution">R$ 79,90</span>
+                            <button class="add-to-cart bg-revolution hover:bg-red-800 text-white py-2 px-6 rounded flex items-center transition-all duration-300 transform hover:scale-105">
+                                <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <div class="h-4 bg-revolution"></div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Miniatura de Estátua</h3>
+                            <div class="flex">
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star"></div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">Reprodução em miniatura da famosa estátua da Praça da Paz Celestial, em resina de alta qualidade.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-lg text-revolution">R$ 159,00</span>
+                            <button class="add-to-cart bg-revolution hover:bg-red-800 text-white py-2 px-6 rounded flex items-center transition-all duration-300 transform hover:scale-105">
+                                <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 5 -->
+                <div class="product-card rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <div class="h-4 bg-revolution"></div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Caneta Colecionável</h3>
+                            <div class="flex">
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star"></div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">Caneta tinteiro inspirada no design da época revolucionária, com estojo em madeira.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-lg text-revolution">R$ 129,90</span>
+                            <button class="add-to-cart bg-revolution hover:bg-red-800 text-white py-2 px-6 rounded flex items-center transition-all duration-300 transform hover:scale-105">
+                                <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 6 -->
+                <div class="product-card rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <div class="h-4 bg-revolution"></div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Conjunto de Selos</h3>
+                            <div class="flex">
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star mr-1"></div>
+                                <div class="star"></div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">Coleção de réplicas de selos históricos da República Popular da China, em estojo de colecionador.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-lg text-revolution">R$ 199,00</span>
+                            <button class="add-to-cart bg-revolution hover:bg-red-800 text-white py-2 px-6 rounded flex items-center transition-all duration-300 transform hover:scale-105">
+                                <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Revolutionary Quote Banner -->
+    <section class="py-10 bg-revolution text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-center">
+                <div class="text-5xl md:text-6xl pr-6 pb-4 md:pb-0">☭</div>
+                <div>
+                    <blockquote class="text-xl md:text-2xl italic font-light">
+                        "Uma revolução não é um jantar, um evento literário, um desenho ou um bordado; não pode ser feita com elegância e cortesia. Uma revolução é um ato de violência."
+                    </blockquote>
+                    <p class="text-right mt-4 font-bold">— Mao Tse-Tung</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="sobre" class="py-16 about-bg parallax-bg text-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-propaganda mb-4 hammer-sickle">NOSSA HISTÓRIA</h2>
+                <div class="w-20 h-1 bg-revolution mx-auto"></div>
+            </div>
+            <div class="max-w-3xl mx-auto bg-black bg-opacity-70 p-8 rounded-lg">
+                <p class="text-lg mb-6">
+                    A Colecionáveis Revolucionários é especializada em itens históricos relacionados ao período revolucionário chinês e ao legado de Mao Tse-Tung. Nossa coleção celebra a história e o impacto da revolução comunista na China e no mundo.
+                </p>
+                <p class="text-lg mb-6">
+                    Nossa missão é preservar e compartilhar a história através de itens colecionáveis autênticos e reproduções de alta qualidade, permitindo que entusiastas e estudiosos conectem-se com este importante período histórico.
+                </p>
+                <p class="text-lg mb-6">
+                    Todos os nossos produtos são acompanhados de informações históricas detalhadas e certificados de autenticidade quando aplicável, garantindo o valor educacional e colecionável de cada item.
+                </p>
+                <div class="flex justify-center mt-8">
+                    <img src="https://s1.static.brasilescola.uol.com.br/img/2019/09/mao-tse-tung.jpg" alt="Mao Tse-Tung" class="w-full max-w-md rounded-lg shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contato" class="py-16 contact-bg parallax-bg text-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-propaganda mb-4 hammer-sickle">ENTRE EM CONTATO</h2>
+                <div class="w-20 h-1 bg-revolution mx-auto"></div>
+            </div>
+            <div class="max-w-xl mx-auto bg-black bg-opacity-70 p-8 rounded-lg shadow-lg">
+                <form>
+                    <div class="mb-6">
+                        <label for="name" class="block mb-2 font-bold">Nome do Camarada</label>
+                        <input type="text" id="name" class="w-full px-4 py-3 rounded-md border-2 border-gray-600 bg-gray-900 text-white focus:border-revolution outline-none transition duration-300 text-base" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="email" class="block mb-2 font-bold">E-mail</label>
+                        <input type="email" id="email" class="w-full px-4 py-3 rounded-md border-2 border-gray-600 bg-gray-900 text-white focus:border-revolution outline-none transition duration-300 text-base" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="message" class="block mb-2 font-bold">Mensagem</label>
+                        <textarea id="message" rows="4" class="w-full px-4 py-3 rounded-md border-2 border-gray-600 bg-gray-900 text-white focus:border-revolution outline-none transition duration-300 text-base" required></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-revolution hover:bg-red-800 text-white py-3 px-6 rounded-md transition duration-300 font-bold text-lg">
+                        ENVIAR MENSAGEM
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0 text-center md:text-left">
+                    <h3 class="text-2xl font-propaganda mb-4 hammer-sickle">COLECIONÁVEIS REVOLUCIONÁRIOS</h3>
+                    <p class="text-gray-400">Unidos pela história, divididos por nada.</p>
+                </div>
+                <div class="text-center md:text-right">
+                    <div class="flex justify-center md:justify-end space-x-4 mb-4">
+                        <a href="#" class="hover:text-revolution transition duration-300">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" class="hover:text-revolution transition duration-300">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="hover:text-revolution transition duration-300">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400">&copy; 2023 Colecionáveis Revolucionários. Todos os direitos pertencem ao povo.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Cart sidebar toggle
+        const cartIcon = document.getElementById('cartIcon');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const closeCart = document.getElementById('closeCart');
+        
+        cartIcon.addEventListener('click', () => {
+            cartSidebar.classList.toggle('translate-x-0');
+        });
+        
+        closeCart.addEventListener('click', () => {
+            cartSidebar.classList.remove('translate-x-0');
+        });
+        
+        // Handle adding products to cart with animation
+        const addButtons = document.querySelectorAll('.add-to-cart');
+        const cartItems = [];
+        const cartItemsElement = document.getElementById('cartItems');
+        const cartCountElement = document.getElementById('cartCount');
+        const cartTotalElement = document.getElementById('cartTotal');
+        let cartCount = 0;
+        
+        addButtons.forEach(button => {
+            button.addEventListener('click', event => {
+                // Get product info
+                const productCard = event.target.closest('.product-card');
+                const productContainer = button.closest('div').parentNode;
+                const productName = productContainer.querySelector('h3').textContent;
+                const productPrice = productContainer.querySelector('span').textContent;
+                const priceValue = parseFloat(productPrice.replace('R$ ', '').replace(',', '.'));
+                
+                // Create flying animation element
+                const buttonRect = button.getBoundingClientRect();
+                const cartIconRect = cartIcon.getBoundingClientRect();
+                
+                const flyingElement = document.createElement('div');
+                flyingElement.className = 'cart-animation';
+                flyingElement.style.top = `${buttonRect.top + buttonRect.height / 2}px`;
+                flyingElement.style.left = `${buttonRect.left + buttonRect.width / 2}px`;
+                document.body.appendChild(flyingElement);
+                
+                // Start animation after a small delay for better visual effect
+                setTimeout(() => {
+                    flyingElement.style.top = `${cartIconRect.top + cartIconRect.height / 2}px`;
+                    flyingElement.style.left = `${cartIconRect.left + cartIconRect.width / 2}px`;
+                    flyingElement.style.opacity = '0';
+                    flyingElement.style.transform = 'scale(0.5)';
+                    
+                    // Add item to cart
+                    cartItems.push({
+                        name: productName,
+                        price: productPrice,
+                        priceValue: priceValue
+                    });
+                    
+                    // Update cart count
+                    cartCount++;
+                    cartCountElement.textContent = cartCount;
+                    
+                    // Update cart display
+                    updateCartDisplay();
+                    
+                    // Remove flying element after animation completes
+                    setTimeout(() => {
+                        document.body.removeChild(flyingElement);
+                    }, 600);
+                }, 10);
+            });
+        });
+        
+        function updateCartDisplay() {
+            if (cartItems.length === 0) {
+                cartItemsElement.innerHTML = '<p class="text-center text-gray-500 dark:text-gray-400">Seu carrinho está vazio</p>';
+                cartTotalElement.textContent = 'R$ 0,00';
+                return;
+            }
+            
+            let totalPrice = 0;
+            cartItemsElement.innerHTML = '';
+            
+            cartItems.forEach((item, index) => {
+                totalPrice += item.priceValue;
+                
+                const itemElement = document.createElement('div');
+                itemElement.className = 'flex justify-between items-center border-b border-gray-200 dark:border-gray-700 py-3';
+                itemElement.innerHTML = `
+                    <div>
+                        <p class="font-bold">${item.name}</p>
+                        <p>${item.price}</p>
+                    </div>
+                    <button class="text-red-500 hover:text-red-700" onclick="removeCartItem(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                cartItemsElement.appendChild(itemElement);
+            });
+            
+            cartTotalElement.textContent = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
+        }
+        
+        // Function to remove items from cart (defined in global scope)
+        window.removeCartItem = function(index) {
+            cartItems.splice(index, 1);
+            cartCount--;
+            cartCountElement.textContent = cartCount;
+            updateCartDisplay();
+        };
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu if open
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
